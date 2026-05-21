@@ -1,5 +1,5 @@
 import { Search, X } from "lucide-react";
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useSearchStore } from "../store/searchStore";
 
 const SearchBar = () => {

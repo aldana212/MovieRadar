@@ -1,5 +1,4 @@
 import { Search, TrendingUp } from "lucide-react";
-import React from "react";
 import { useSearchStore } from "../store/searchStore";
 import type { Movie } from "../types/movie.types";
 import type { View } from "./MovieSection";

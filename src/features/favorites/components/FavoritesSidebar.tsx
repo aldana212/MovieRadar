@@ -1,4 +1,3 @@
-import React from "react";
 import type { FavoriteRow } from "../types/favorite.types";
 import type { Movie } from "@/features/movies/types/movie.types";
 import StarRating from "@/features/movies/components/StarRating";
