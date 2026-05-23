@@ -1,18 +1,49 @@
 import { supabase } from "@/lib/supabase";
 import type { FavoriteRow } from "../types/favorite.types";
 import type { Movie } from "@/features/movies/types/movie.types";
+import type { FavoriteFilters } from "../hooks/useFavorites";
 
 export const favoritesApi = {
-  getFavorites: async (userId?: string): Promise<FavoriteRow[]> => {
-    const { data, error } = await supabase
-      .from("favorites")
-      .select("*")
-      .eq("user_id", userId)
-      .order("created_at", { ascending: false });
+  getFavorites: async (
+    userId?: string,
+    filters?: FavoriteFilters,
+  ): Promise<FavoriteRow[]> => {
+    if (!userId) throw new Error("userId is required");
+
+    let query = supabase.from("favorites").select("*").eq("user_id", userId);
+
+    // 🔎 SEARCH
+    if (filters?.search) {
+      query = query.ilike("title", `%${filters.search}%`);
+    }
+
+    // 📊 SORT (default: recent)
+    switch (filters?.sort ?? "recent") {
+      case "recent":
+        query = query.order("created_at", { ascending: false });
+        break;
+
+      case "rating":
+        query = query.order("vote_average", { ascending: false });
+        break;
+
+      case "title_asc":
+        query = query.order("title", { ascending: true });
+        break;
+
+      case "title_desc":
+        query = query.order("title", { ascending: false });
+        break;
+
+      default:
+        query = query.order("created_at", { ascending: false });
+    }
+
+    const { data, error } = await query;
 
     if (error) throw error;
 
-    return data;
+    return data ?? [];
   },
 
   addFavorite: async (userId?: string, movie?: Movie) => {

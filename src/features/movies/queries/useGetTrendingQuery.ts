@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { moviesApi } from "../api/moviesApi";
 
-export const useGetTrendingQuery = () => {
+export const useGetTrendingQuery = (timeWindow: string) => {
   const fetchData = async () => {
     try {
-      const response = await moviesApi.getTrending();
+      const response = await moviesApi.getTrending(timeWindow);
       return response;
     } catch (error) {
       console.log(error);
@@ -12,8 +12,9 @@ export const useGetTrendingQuery = () => {
   };
 
   const query = useQuery({
-    queryKey: ["getTrending"],
+    queryKey: ["getTrending", timeWindow],
     queryFn: fetchData,
+    enabled: !!timeWindow,
   });
 
   return {

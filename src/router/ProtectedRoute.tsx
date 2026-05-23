@@ -1,8 +1,8 @@
 // src/features/auth/ProtectedRoute.tsx
 import { useAuthStore } from "@/features/auth/store/authStore";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
+export const ProtectedRoute = () => {
   const { user, loading } = useAuthStore();  
 
   if (loading) {
@@ -13,5 +13,5 @@ export const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
     return <Navigate to="/login" replace />;
   }
 
-  return <>{children}</>;
+  return <Outlet />
 };

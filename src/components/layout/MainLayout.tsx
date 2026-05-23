@@ -1,16 +1,20 @@
-import { type ReactNode } from "react";
 import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
+import { Outlet } from "react-router-dom";
 
-interface MainLayoutProps {
-  children: ReactNode;
-}
-
-const MainLayout = ({ children }: MainLayoutProps) => {
+const MainLayout = () => {
   return (
-    <div className="min-h-screen bg-neutral-950 text-white">
+    <div className="min-h-screen bg-[#0A0C0E] text-white">
       <Navbar />
+      <Sidebar />
+      <main
+        className="
+          sm:ml-72 
+          max-w-7xl mx-auto p-6"
+      >
+        <Outlet />
 
-      <main className="max-w-7xl mx-auto px-6 py-10">{children}</main>
+      </main>
     </div>
   );
 };

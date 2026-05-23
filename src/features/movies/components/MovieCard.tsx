@@ -1,13 +1,13 @@
 import { Heart } from "lucide-react";
 import StarRating from "./StarRating";
-import { TMDB_CONFIG } from "@/config/tmdb";
 import type { Movie } from "../types/movie.types";
+import { getPosterUrl } from "../utils/movieImage";
 
 interface MovieCardProps {
   movie: Movie;
   isFavorite: boolean;
   onToggleFavorite: (movie: Movie) => void;
-  onClick: (movie: Movie) => void;
+  onClick?: (movie: Movie) => void;
 }
 
 const MovieCard = ({
@@ -17,14 +17,17 @@ const MovieCard = ({
   onToggleFavorite,
 }: MovieCardProps) => {
   const year = movie.release_date?.split("-")[0] ?? "—";
-  const poster = movie.poster_path
-    ? `${TMDB_CONFIG.IMAGE.poster}${movie.poster_path}`
-    : null;
+
+  const poster = getPosterUrl(movie?.poster_path ?? "");
+
+  const handleClick = () => {
+    onClick?.(movie);
+  };
 
   return (
     <div
       className="group relative bg-gray-900 rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.03] hover:shadow-2xl hover:shadow-black/60 border border-gray-800 hover:border-gray-600"
-      onClick={() => onClick(movie)}
+      onClick={handleClick}
     >
       <div className="aspect-[2/3] bg-gray-800 overflow-hidden">
         {poster ? (
@@ -65,7 +68,7 @@ const MovieCard = ({
             isFavorite
               ? "bg-red-500/90 text-white shadow-lg shadow-red-500/30"
               : "bg-black/50 text-gray-400 hover:bg-red-500/80 hover:text-white opacity-0 group-hover:opacity-100"
-          }`}
+          } cursor-pointer`}
       >
         <Heart className={`w-4 h-4 ${isFavorite ? "fill-current" : ""}`} />
       </button>
@@ -74,8 +77,10 @@ const MovieCard = ({
         <h3 className="text-white font-semibold text-sm leading-tight line-clamp-2 mb-1">
           {movie.title}
         </h3>
+
         <div className="flex items-center justify-between">
           <span className="text-gray-500 text-xs">{year}</span>
+
           {movie.vote_average > 0 && (
             <StarRating score={movie.vote_average} size="sm" />
           )}

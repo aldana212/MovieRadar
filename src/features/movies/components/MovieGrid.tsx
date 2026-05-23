@@ -2,31 +2,27 @@ import MovieCard from "./MovieCard";
 import type { Movie } from "../types/movie.types";
 import { useFavorites } from "@/features/favorites/hooks/useFavorites";
 import MoviePagination from "./MoviePagination";
+import { useNavigate } from "react-router-dom";
 
 interface MovieGridProps {
   displayMovies: Movie[];
   loading: boolean;
-  onToggleFavorite: (movie: Movie) => void;
-  onClick: (movie: Movie) => void;
-
   showPagination: boolean;
-  page: number;
+  page?: number;
+  onPageChange?: (page: number) => void;
   totalPages?: number;
-  onPageChange: (page: number) => void;
 }
 
 const MovieGrid = ({
   loading,
   displayMovies,
-  onToggleFavorite,
-  onClick,
-
-  showPagination,
   page,
-  totalPages,
   onPageChange,
+  totalPages = 1,
 }: MovieGridProps) => {
-  const { isFavorite } = useFavorites();
+  const { isFavorite, handleToggleFavorite } = useFavorites();
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -38,15 +34,15 @@ const MovieGrid = ({
               key={movie.id}
               movie={movie}
               isFavorite={isFavorite(movie.id)}
-              onToggleFavorite={onToggleFavorite}
-              onClick={onClick}
+              onToggleFavorite={handleToggleFavorite}
+              onClick={() => navigate(`/movie/${movie?.id}`)}
             />
           ))}
         </div>
       )}
 
       {/* Pagination */}
-      {showPagination && (
+      {totalPages > 1 && (
         <MoviePagination
           page={page}
           totalPages={totalPages ?? 0}

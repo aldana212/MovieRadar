@@ -1,11 +1,16 @@
 import { api } from "@/services/axios";
 import type { ApiResponse } from "@/types/api.types";
 import type { Movie } from "../types/movie.types";
+import type { GenreListResponse } from "../types/genre.types";
+import type { MovieDetails } from "../types/MovieDetails.types";
 
 export const moviesApi = {
-  getTrending: async (page = 1): Promise<ApiResponse<Movie>> => {
+  getTrending: async (
+    timeWindow: string,
+    page = 1,
+  ): Promise<ApiResponse<Movie>> => {
     const { data } = await api.get<ApiResponse<Movie>>(
-      `/trending/movie/week?page=${page}`,
+      `/trending/movie/${timeWindow}?page=${page}`,
     );
 
     return data;
@@ -25,8 +30,35 @@ export const moviesApi = {
     return data;
   },
 
-  getMovieDetails: async (id: number): Promise<Movie> => {
-    const { data } = await api.get<Movie>(`/movie/${id}`);
+  getMovieDetails: async (id: number): Promise<MovieDetails> => {
+    const { data } = await api.get<MovieDetails>(`/movie/${id}?append_to_response=credits,videos,similar`);
+
+    return data;
+  },
+
+  getMovieGenres: async (language = "es-ES"): Promise<GenreListResponse> => {
+    const { data } = await api.get<GenreListResponse>(
+      `/genre/movie/list?language=${language}`,
+    );
+
+    return data;
+  },
+
+  getPopularMoviesByFiltersQuery: async (
+    query: string,
+  ): Promise<ApiResponse<Movie>> => {
+    const { data } = await api.get<ApiResponse<Movie>>(
+      `/discover/movie?${query}`,
+    );
+
+    return data;
+  },
+
+  getMoviesByGenre: async (query: string,): Promise<ApiResponse<Movie>> => {
+
+    const { data } = await api.get<ApiResponse<Movie>>(
+      `/discover/movie?${query}`,
+    );
 
     return data;
   },

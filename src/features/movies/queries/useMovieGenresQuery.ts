@@ -1,26 +1,20 @@
 import { useQuery } from "@tanstack/react-query";
 import { moviesApi } from "../api/moviesApi";
 
-export const useSearchMoviesQuery = ({
-  search,
-  page,
-}: {
-  search: string;
-  page?: number;
-}) => {
+export const useMovieGenresQuery = () => {
   const fetchData = async () => {
     try {
-      const response = await moviesApi.searchMovies(search, page);
-      return response;
+      const response = await moviesApi.getMovieGenres();
+      // return response;
+      return response?.genres.slice(0, 8);
     } catch (error) {
       console.log(error);
     }
   };
 
   const query = useQuery({
-    queryKey: ["getTrending", search, page],
+    queryKey: ["getGenres"],
     queryFn: fetchData,
-    enabled: !!search.trim(),
     placeholderData: (previousData) => previousData,
   });
 

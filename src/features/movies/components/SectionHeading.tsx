@@ -1,26 +1,40 @@
-import { Search, TrendingUp } from "lucide-react";
+import { Search } from "lucide-react";
 import { useSearchStore } from "../store/searchStore";
 import type { Movie } from "../types/movie.types";
-import type { View } from "./MovieSection";
+import type { ReactNode } from "react";
+import type { FavoriteRow } from "@/features/favorites/types/favorite.types";
 
 interface SectionHeadingProps {
-  view: View;
-  movies: Movie[];
+  title: string;
+  description?: string;
+  icono: ReactNode;
+  movies: Movie[] | FavoriteRow[];
   loading: boolean;
 }
 
-const SectionHeading = ({ view, movies, loading }: SectionHeadingProps) => {
+// title, icon, movies, loading
+
+const SectionHeading = ({
+  title,
+  description,
+  icono,
+  movies,
+  loading,
+}: SectionHeadingProps) => {
   const query = useSearchStore((state) => state.query);
 
   return (
-    <div className="flex items-center gap-3 mb-6">
-      {view === "trending" ? (
-        <>
-          <TrendingUp className="w-5 h-5 text-blue-400" />
-          <h1 className="text-xl font-semibold text-white">
-            Trending This Week
-          </h1>
-        </>
+    <div className="flex items-center gap-3">
+      {query.trim().length === 0 ? (
+        <div className="flex flex-col items-start gap-[8px]">
+          <div className="flex items-center gap-[12px]">
+            {icono}
+            <h1 className="text-[40px] leading-[40px] font-bold text-[#FFFFFF]">
+              {title}
+            </h1>
+          </div>
+          {description && <p className="max-w-[655px] text-[16px] text-[#C2C6D8] leading-[22px]">{description}</p>}
+        </div>
       ) : (
         <div className="flex items-center gap-2">
           <Search className="w-4 h-4 text-gray-500" />
