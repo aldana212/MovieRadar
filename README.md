@@ -1,75 +1,114 @@
-# React + TypeScript + Vite
+# 🎬 MovieRadar
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web para explorar películas usando la API de TMDB. Permite buscar títulos, ver detalles completos, explorar tendencias y guardar películas favoritas con persistencia en Supabase.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 🌐 Demo
 
-## React Compiler
+![MovieRadar Demo](./public/Movie-App-demo.gif)
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+---
 
-Note: This will impact Vite dev & build performances.
+## 🚀 Live Demo
 
-## Expanding the ESLint configuration
+- **Frontend:** https://movie-radar-one.vercel.app
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## ✨ Features
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+- 🔍 Búsqueda de películas en tiempo real  
+- 🎥 Detalle completo de cada película (sinopsis, rating, géneros, etc.)  
+- 🔥 Trending y populares al entrar a la app  
+- 🏷️ Filtros por género  
+- ❤️ Sistema de favoritos persistente (Supabase)  
+- 📄 Paginación de resultados  
+- ⚡ Data fetching optimizado con React Query  
+- 🚦 Rutas protegidas y arquitectura modular  
+- 📱 UI responsive con Tailwind CSS  
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## 🧠 Arquitectura del proyecto
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+El proyecto está organizado por features, lo que permite escalabilidad y mantenimiento fácil.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+src/
+├── assets/              # Imágenes y recursos estáticos
+├── components/          # Componentes reutilizables
+│   ├── layout/          # Layout principal
+│   └── ui/              # Componentes base (buttons, cards, etc.)
+├── config/              # Configuraciones globales
+├── constants/           # Constantes de la app
+├── features/            # Módulos por dominio
+│   ├── auth/            # Autenticación
+│   ├── favorites/       # Favoritos (Supabase)
+│   └── movies/          # Lógica de películas
+├── hooks/               # Custom hooks
+├── lib/                 # Integraciones (Supabase, API clients)
+├── pages/               # Vistas principales
+│   ├── AuthPage.tsx
+│   ├── FavoritesPage.tsx
+│   ├── GenrePage.tsx
+│   ├── MovieDetailPage.tsx
+│   ├── PopularPage.tsx
+│   └── TrendingPage.tsx
+├── router/              # Configuración de rutas
+├── services/            # Llamadas a APIs (TMDB)
+├── types/               # Tipos TypeScript
+├── utils/               # Utilidades
+├── App.tsx
+└── main.tsx
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+- React
+- TypeScript
+- React Router DOM
+- Tailwind CSS
+- Axios
+
+### State & Data Fetching
+- Zustand
+- TanStack React Query
+- Custom Hooks
+
+### Backend & Services
+- Supabase (Auth + favoritos)
+- TMDB API (datos de películas)
+
+---
+
+## 🔐 Core Features
+
+### ❤️ Favoritos con Supabase
+
+- Guardar películas
+- Eliminar favoritos
+- Ver lista personalizada sincronizada en la nube
+
+---
+
+## ⚙️ Instalación
+
+1. Clonar repositorio
+  - git clone https://github.com/aldana212/MovieRadar.git
+  - cd MovieRadar
+2. Instalar dependencias
+  - npm install
+3. Variables de entorno
+  - Crear archivo .env:
+    - VITE_TMDB_API_KEY=
+    - VITE_TMDB_BASE_URL=
+
+    - VITE_SUPABASE_URL=
+    - VITE_SUPABASE_ANON_KEY=
+
+4. Ejecutar proyecto
+ - npm run dev
+
+ - Abrir: http://localhost:5173
